@@ -12,7 +12,17 @@
 <script>
     Sentry.init({ dsn: 'https://18bcc5b8761d44a6b1fd6950d205014f@poplar.geek.163.com/14' ,environment:'front-study-web'});
     window.addEventListener('error', function(error) {
-        console.error('捕获到异常：', error);
+        var customError  = new Error("[SOURCR LOAD ERROR] " + 'test' + ", in " + window.location.href);
+        customError.name = "[SOURCR LOAD ERROR]";
+        var sourceErrorReportSpacing = 5;
+        if(window.localStorage){
+            window.localStorage.setItem('SOURCE_LOAD_ERROR_REPORT_SPACING',Number(window.localStorage.getItem('SOURCE_LOAD_ERROR_REPORT_SPACING')||0)+1);
+            if(Number(window.localStorage.getItem('SOURCE_LOAD_ERROR_REPORT_SPACING'))%sourceErrorReportSpacing===0){
+                Sentry.captureException(customError);
+                window.localStorage.setItem('SOURCE_LOAD_ERROR_REPORT_SPACING',0);
+            }
+        }
+        
     }, true)
 </script>
         <script src="xixi.js"></script>
