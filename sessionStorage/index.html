@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    helloworld
+    <div class="j-btn">toggle session storage</div>
+    <div class="j-txt"></div>
+<script>
+    var btn = document.querySelector('.j-btn');
+    var txt = document.querySelector('.j-txt');
+    txt.innerHTML = sessionStorage.getItem('test')
+    btn.addEventListener('click',()=>{
+        sessionStorage.setItem('test',Number(sessionStorage.getItem('test'))+1);
+        txt.innerHTML = sessionStorage.getItem('test')
+    });
+</script>
+</body>
+</html>
