@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    This is index
+<script>
+let num = window.localStorage.getItem('num');
+// 不会记到url history中， 上一步失效
+window.location.replace('http://127.0.0.1:8080/location/index2.html')
+num = (num?Number(num):0)+1;
+window.localStorage.setItem('num',num);
+if(Number(num)<3){
+
+    window.location.reload();
+}
+</script>
+</body>
+</html>
