@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script
+      src="//edu-cms.nosdn.127.net/topics/js/sentry_4f2694a072f12d50dbdda76eac871229.js"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      window.environmentType = "online";
+
+      Sentry.init({
+        dsn: "https://18bcc5b8761d44a6b1fd6950d205014f@poplar.geek.163.com/14",
+        environment: window.projectName || "front-study-web",
+        beforeSend(event) {
+          var errorName =
+            ((((event || {}).exception || {}).values || [])[0] || {}).type ||
+            "";
+          var whiteErrorName = [
+            "[SOURCR LOAD ERROR]",
+            "[API ERROR]",
+            "[CUSTOM ERROR]"
+          ];
+          if (whiteErrorName.includes(errorName)) {
+            return event;
+          } else {
+            return null;
+          }
+        }
+      });
+      window.onerror = function(...args){
+          debugger;
+      }
+      window.addEventListener(
+        "error",
+        function(error) {
+          var resourceLink = ((error || {}).target || {}).src;
+          var resourceType = ((error || {}).target || {}).tagName;
+          //资源加载异常上传间隔值
+          var sourceErrorReportSpacing = 20;
+
+          // 指定静态域白名单
+          var whiteReg = /(\.stu\.126\.net)|(\.nosdn\.127\.net)/;
+          if (resourceType === "SCRIPT" && whiteReg.test(resourceLink)) {
+            var customError = new Error(
+              "[SOURCR LOAD ERROR] " +
+                resourceLink +
+                ", in " +
+                window.location.href
+            );
+            customError.name = "[SOURCR LOAD ERROR]";
+            if (window.localStorage) {
+              window.localStorage.setItem(
+                "SOURCE_LOAD_ERROR_REPORT_SPACING",
+                Number(
+                  window.localStorage.getItem(
+                    "SOURCE_LOAD_ERROR_REPORT_SPACING"
+                  ) || 0
+                ) + 1
+              );
+              if (
+                Number(
+                  window.localStorage.getItem(
+                    "SOURCE_LOAD_ERROR_REPORT_SPACING"
+                  )
+                ) %
+                  sourceErrorReportSpacing ===
+                0
+              ) {
+                Sentry.captureException(customError);
+                window.localStorage.setItem(
+                  "SOURCE_LOAD_ERROR_REPORT_SPACING",
+                  0
+                );
+              }
+            }
+          }
+        },
+        true
+      );
+    </script>
+  </head>
+  <body>
+    <script>
+        // JSON.parse无法正常方式捕获，只有两种方案来捕获并上报；
+        // 1.babel语法树转；
+        // 2.全局复写
+        //sample patch for parse
+        // (function(){
+
+        // //store the original parse
+        // var parse = JSON.parse;
+
+        // //patched parse function
+        // JSON.parse = function(){
+        //   try{
+        //     //try parsing
+        //     return parse.apply(this,arguments);
+        //   } catch(e){
+        //     //something went wrong
+        //     //custom code here
+        //     throw e;
+        //   }
+        // }
+        // }());
+    //   JSON.parse("1:2");
+    //   sfsfs
+    </script>
+    <script src="./index.js"></script>
+  </body>
+</html>
