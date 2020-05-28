@@ -375,6 +375,14 @@
         <button class="btn btn_primary" data-type="selectExternalContact">
           selectExternalContact
         </button>
+        <span class="desc">打开个人信息页接口（外部用户-客户）</span>
+        <button class="btn btn_primary" data-type="openUserProfile">
+          openUserProfile
+        </button>
+        <span class="desc">获取当前外部联系人userid</span>
+        <button class="btn btn_primary" data-type="getCurExternalContact">
+          getCurExternalContact
+        </button>
         <h3 id="menu-previewfile">文件接口</h3>
         <span class="desc">文件预览接口</span>
         <button class="btn btn_primary" data-type="previewFile">
@@ -440,6 +448,8 @@
         "openEnterpriseChat",
         "selectEnterpriseContact",
         "selectExternalContact",
+        "openUserProfile",
+        "getCurExternalContact",
         "onHistoryBack",
         "openDefaultBrowser",
       ],
@@ -828,6 +838,34 @@
                 }
               }
             );
+            break;
+          case "openUserProfile":
+            var h = wx.invoke || WeixinJSBridge.invoke;
+            h(
+              "openUserProfile",
+              {
+                type: 2,
+                userid: "wmo54PCQAA0RCD-lvu1HfSWzl3XSDAZA",
+              },
+              function(res) {
+                if (res.err_msg == "openUserProfile:ok") {
+                } else {
+                  //错误处理
+                }
+              }
+            );
+            break;
+          case "getCurExternalContact":
+            var h = wx.invoke || WeixinJSBridge.invoke;
+            h("getCurExternalContact", {}, function(res) {
+              if (res.err_msg == "getCurExternalContact:ok") {
+                userId = res.userId; //返回当前外部联系人userId
+                alert(userId);
+              } else {
+                //错误处理
+                alert(res.err_msg);
+              }
+            });
             break;
           case "previewFile":
             wx.previewFile({
